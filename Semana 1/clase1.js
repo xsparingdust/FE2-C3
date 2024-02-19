@@ -79,5 +79,5 @@
   }
 
   // Guardo el nombre del jugador que devuelve la función
-  const nombreJugador = iniciarJuego();
+  // const nombreJugador = iniciarJuego();
   
