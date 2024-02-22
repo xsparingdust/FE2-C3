@@ -58,7 +58,7 @@ function obtenerUsuario() {
     // El método map() crea un nuevo array con los resultados de la llamada
     // a la función indicada aplicados a cada uno de sus elementos.
     //👇
-    let nombres = usuario.split(" ");
+    let nombres  = usuario.split(" ");
     usuario = nombres.map( (nombre) => nombre.charAt(0).toUpperCase() + nombre.slice(1)).join(" ");
 
 
@@ -91,10 +91,8 @@ function renderizarAlbumes(listado) {
     // Seleccionar el nodo sobre el cual vamos a trabajar
     // En este caso el nodo sobre el cual vamos a insertar etiquetas HTML
     const covers = document.querySelector(".covers");
-    // console.log(covers);
-    
-    // covers.innerHTML = "";
-    // console.log(covers);
+
+    covers.innerHTML = "";
 
     // Crear los elementos a agregar en el DOM en el nodo seleccionado
     // Para cada album:
@@ -107,7 +105,6 @@ function renderizarAlbumes(listado) {
 
 
         // Agregar atributos de cada nodo o etiqueta creada
-        // Un atributo es un modificador de un elemento, una forma de controlar el comportamiento.
         //👇
         li.setAttribute("data-id", album.id);
 
@@ -131,6 +128,9 @@ function renderizarAlbumes(listado) {
 };
 
 renderizarAlbumes(albumesFamosos);
+
+
+
 
 // ----------------------------------------------------------------------------//
 // -----------------------------   EXTRAS   -----------------------------------//
@@ -211,7 +211,6 @@ renderizarAlbumes(albumesFamosos);
 
 
 
-
 //-----------------------
 // append vs. appendChild
 //-----------------------
@@ -224,16 +223,6 @@ renderizarAlbumes(albumesFamosos);
 // mientras que Node.appendChild() solo puede añadir un nodo.
 
 // (fuente: documentación de MDN)
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -253,10 +242,55 @@ renderizarAlbumes(albumesFamosos);
 // 3- tener en cuenta: usar las palabra en plural o en singular, según cuando
 // sea necesario ( es decir: 1 album, 1 favorito / 2 albumes, 3 favoritos )
 
-
 function mostrarDatosEnPerfil(albumes) {
     // desarrollar la función 👇
-   
-}
+    const cantidadAlbumes = document.getElementById("cant-albums"),
+        cantidadFavoritos = document.querySelector("#cant-favoritos");
 
+    let contadorAlbum = 0,
+        contadorFavoritos = 0;
+
+    albumes.forEach( function(album) {
+    // albumes.forEach( (album) =>{
+        contadorAlbum++
+        // if (album.like == true) {
+        if (album.like) {
+            contadorFavoritos++
+        }
+    })
+
+    console.log(contadorAlbum);
+    console.log(contadorFavoritos);
+
+
+    if (contadorAlbum == 1) {
+        cantidadAlbumes.innerText = contadorAlbum + " álbum"
+    } else {
+        cantidadAlbumes.textContent = `${contadorAlbum} álbumes`
+    }
+    if (contadorFavoritos == 1) {
+        cantidadFavoritos.innerText = contadorFavoritos + " favorito"
+    } else {
+        cantidadFavoritos.textContent = `${contadorFavoritos} favoritos`
+    }
+    
+
+}
 mostrarDatosEnPerfil(albumesFamosos);
+
+
+
+// Otra solución: ¡gracias Carlos!
+// 👇
+//   function mostrarDatosEnPerfil(albumes) {
+//     let cantAlbumes = albumes.length;
+//     let favAlbumes = 0;
+//     albumes.forEach(album =>{
+//         if(album.like){favAlbumes ++;}
+//     })
+//     const cantAlbumesSpan = document.querySelector("#cant-albums");
+//     cantAlbumesSpan.innerText = `${cantAlbumes} álbum${cantAlbumes > 1 ? "es": ""}`
+
+//     const favAlbumesSpan = document.querySelector("#cant-favoritos");
+//     favAlbumesSpan.innerText = `${favAlbumes} favorito${favAlbumes > 1 ? "s" : ""}`
+// }
