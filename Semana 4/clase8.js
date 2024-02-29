@@ -89,8 +89,6 @@ form.addEventListener("submit", function (evento) {
     console.log(evento);
 
     const datos = capturarDatosFormulario();
-
-
 })
 
 
