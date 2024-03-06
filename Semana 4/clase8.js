@@ -89,6 +89,9 @@ form.addEventListener("submit", function (evento) {
     console.log(evento);
 
     const datos = capturarDatosFormulario();
+    const errores = validarInformacion(datos);
+    renderizarErrores(errores);
+    mostrarMensajeExito(errores);
 })
 
 
@@ -115,10 +118,86 @@ sin contar espacios al principio, en el medio o final, sumar el error:
 */
 
 
+// function validarInformacion(usuario) {
+//     let errores = [];
+//     // 👇 desarrollar aqui la funcion
+
+//     return errores;
+// }
+
 function validarInformacion(usuario) {
-    let errores = [];
-    // 👇 desarrollar aqui la funcion
+    let errores = [];   
+    if (!isNaN(usuario.nombre) || usuario.nombre.length < 3) {
+        errores.push("El nombre de usuario debe tener mas de 3 caracteres y no puede ser un número")
+    } 
+    if (usuario.password.trim().length < 6) {
+        errores.push("El password debe tener más de 6 caracteres")
+    }
+    if (usuario.telefono.trim().length < 10) {
+        errores.push("El telefono debe tener más de 10 números")
+    }
+    if (usuario.hobbies.length > 4 || usuario.hobbies.length == 0) {
+        errores.push("Solo es posible seleccionar un máximo de 4 hobbies, y como mínimo 1");
+    }
 
     return errores;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                       [4] FUNCION: renderizar errores                      */
+/* -------------------------------------------------------------------------- */
+
+function renderizarErrores(listado) {
+    const cajaErrores = document.querySelector("#errores");
+    console.log(cajaErrores);
+
+    if (cajaErrores) {
+          cajaErrores.remove();
+    }
+
+    if (listado.length > 0) {
+          const divTemplate = document.createElement('div');
+          divTemplate.setAttribute("id", "errores");
+          divTemplate.style = "background:rgba(255, 0, 0, 0.2);padding:.5em 1em;color: red;margin: .5em 0;";
+          listado.forEach( function(error){
+                divTemplate.innerHTML += `<p><span>${error}</span></p>`;
+          })
+
+          form.appendChild(divTemplate);
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                [5] FUNCION: Formulario completado con éxito                */
+/* -------------------------------------------------------------------------- */
+// Esta funcion se va a encargar de mostrar que el formulario se completó correctamente.
+// Para eso debera cumplir con los siguientes requerimientos.
+// 1 - Recibe el listado de errores, y solo si no hay ninguno debe:
+// 2 - mostrar al final del formulario un caja con la misma estructura que la caja de errores, pero con la tonalidad verde
+// 3 - dentro la caja debe mostrar un párrafo con el mensaje: "¡Formulario completado con éxito!"
+// 4 - a su vez se debe deshabilitar el boton del formulario
+// 5 - finalmente pasados 4 segundos: se debe eliminar esa caja, habilitar el boton y limpiar el formulario
+
+function mostrarMensajeExito(listado) {
+
+    if (listado == 0) {
+        const divTemplate = document.createElement('div')
+        divTemplate.setAttribute("id", "exito")
+        divTemplate.style = "background:rgba(0, 255, 0, 0.2);padding:.5em 1em;color: red;margin: .5em 0;";
+        
+        divTemplate.innerHTML = `<p><span>¡Formulario completado con éxito!</span></p>`
+
+        form.appendChild(divTemplate)
+
+        const boton = document.querySelector("button")
+        boton.setAttribute("disabled", "")
+
+        const cajaExito = document.querySelector("#exito");
+
+        setTimeout(() => {
+            boton.removeAttribute("disabled")
+            form.reset()
+            cajaExito.remove()
+        }, 4000);
+    }
+}
