@@ -37,10 +37,6 @@ const terminosError = document.querySelector('#terminosError');
 function mostrarErrores() {
     estadoErroresOK.email ? emailError.classList.remove("visible") : emailError.classList.add("visible");
 
-
-
-
-
     estadoErroresOK.password ? passwordError.classList.remove("visible") : passwordError.classList.add("visible")
     estadoErroresOK.rol ? rolError.classList.remove("visible") : rolError.classList.add("visible")
     estadoErroresOK.terminos ? terminosError.classList.remove("visible") : terminosError.classList.add("visible")
@@ -115,7 +111,7 @@ function validarTerminos(verificacion) {
     let resultado = false;
 
     if (verificacion) {
-        resultado = true;
+        resultado = true
         // console.log("cumple");
     }
     
@@ -127,7 +123,7 @@ function validarTerminos(verificacion) {
 /*                      [4] FUNCION: escuchamos el submit                     */
 /* -------------------------------------------------------------------------- */
 
-// en el evento submit chequear nuestro estado de errores
+// en el evento submit chequear el estado de errores
 formulario.addEventListener('submit', function (evento) {
     // prevenimos el comportamiento por defecto
    evento.preventDefault();
@@ -138,7 +134,6 @@ formulario.addEventListener('submit', function (evento) {
         estadoErroresOK.rol &&
         estadoErroresOK.terminos
     ) {
-        console.log("success");
         navegarPaginaExito();
     }
 
@@ -150,14 +145,32 @@ formulario.addEventListener('submit', function (evento) {
 /*                [5] FUNCION: Formulario completado con éxito                */
 /* -------------------------------------------------------------------------- */
 // Esta funcion se va a encargar de realizar la redirección cuando el formulario se complete correctamente.
-// Para eso debera cumplir con los siguientes requerimientos.
-// 1 - Deshabilitar el boton del formulario.
+// Para eso deberá cumplir con los siguientes requerimientos:
+// 1 - Deshabilitar el botón del formulario.
 // 2 - Esperar 3 segundos para redireccionar a la otra página 
-// 3 - Durante ese tiempo el boton deshabilitado debe mostrar el texto: "Cargando..."
-
+// 3 - Durante ese tiempo el botón deshabilitado debe mostrar el texto: "Cargando..."
+// 4 - Cuando vaya a la página de 'usuario.html' no se debe permitir que mediante
+//     el botón de "Atrás"(la flechita del navegador) el usuario vuelva a index.
 
 function navegarPaginaExito() {
-    //   desarrollar la funcion aqui
+    // modificación del botón
+    const btn = document.querySelector("button");
+    btn.setAttribute("disabled", true);
+    btn.textContent = "Cargando...";
 
+    // almacenar en localStorage los datos del usuario
+    // como no es un string, sino un objeto más complejo, se debe convertir a JSON
+    // las claves y los valores serán siempre cadenas de texto
+    localStorage.setItem("user", JSON.stringify(estadoUsuario));
 
+    // que se ejecute la acción una vez superado el tiempo especificado
+    setTimeout(() => {
+        // objeto location: atributos y métodos para manipular información
+        // que viaja en la barra de direcciones (href, asign, replace)
+        location.replace('./usuario.html');
+    }, 3000);
 }
+
+// window.localStorage: los datos almacenados no tienen expiración
+// window.sessionStorage: permite acceder a un objeto storage asociado a la sesión actual
+// y es eliminada cuando se cierra el navegador (cuando se cierra la sesión de navegación)
