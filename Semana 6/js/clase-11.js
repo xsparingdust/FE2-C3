@@ -196,7 +196,33 @@ function consultaAsincrona(ruta) {
 
 
 function renderizarElementos(listado){
-    // desarrollar la funcion 👇
+        const contenedor = document.createElement('div');
+        contenedor.id = 'contenedor-comentarios';
+    
+        listado.forEach(comentario => {
+            const comentarioElemento = document.createElement('div');
+            comentarioElemento.classList.add('comentario');
+    
+            const autorElemento = document.createElement('p');
+            autorElemento.textContent = comentario.autor;
+            comentarioElemento.appendChild(autorElemento);
+    
+            const textoElemento = document.createElement('p');
+            textoElemento.textContent = comentario.texto;
+            comentarioElemento.appendChild(textoElemento);
+    
+            contenedor.appendChild(comentarioElemento);
+        });
+    
+        const formulario = document.querySelector('h2');
+        formulario.parentNode.insertBefore(contenedor, formulario.nextSibling);
+    }
+    
+// Llama a la función renderizarElementos pasándole el listado de comentarios
+const comentarios = [
+    { autor: 'Usuario1', texto: '¡Este es un comentario genial!' },
+    { autor: 'Usuario2', texto: 'Me encanta este sitio web.' },
+    { autor: 'Usuario3', texto: '¡Excelente trabajo!' }
+];
 
-
-}
+renderizarElementos(comentarios);
