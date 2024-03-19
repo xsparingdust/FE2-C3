@@ -111,5 +111,34 @@ function renderizarElementos(listado) {
 
 // 4- Solo deben cargarse los primeros 10 comentarios que nos llegan.
 
+function consultaApi(endpoint) {
+    fetch(endpoint)
+        .then(objetoRespuesta => {
+            if (!objetoRespuesta.ok) {
+                throw new Error('Error al consultar la API');
+            }
+            return objetoRespuesta.json();
+        })
+        .then(datosJs => {
+            // Verificamos si hay comentarios para cargar
+            if (datosJs && datosJs.length > 0) {
+                // Si hay comentarios, renderizamos los elementos
+                renderizarElementos(datosJs.slice(0, 10)); // Solo los primeros 10 comentarios
+                // Ocultamos los botones "Ver comentarios"
+                const botones = document.getElementsByClassName('mostrar');
+                for (let i = 0; i < botones.length; i++) {
+                    botones[i].style.display = 'none';
+                }
+            } else {
+                // Si no hay comentarios, mostramos un mensaje al usuario
+                mostrarMensaje('No se encontraron comentarios');
+            }
+        })
+        .catch(error => {
+            // Mostramos el error al usuario
+            mostrarError(error.message);
+        });
+}
+
 
 
